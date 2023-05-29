@@ -13,8 +13,8 @@ import (
 )
 
 func main() {
-	containerConf := container.NewContainer()
-	containerConf.Init()
+	containerConf := container.InitContainer()
+	fmt.Println(containerConf)
 
 	app := fiber.New()
 	app.Use(logger.New())
