@@ -10,15 +10,17 @@ import (
 	"github.com/gofiber/fiber/v2/middleware/logger"
 	"github.com/gofiber/fiber/v2/middleware/recover"
 	"github.com/tangguhriyadi/content-service/internals/infrastructure/container"
+	route "github.com/tangguhriyadi/content-service/internals/server/http"
 )
 
 func main() {
 	containerConf := container.InitContainer()
-	fmt.Println(containerConf)
 
 	app := fiber.New()
 	app.Use(logger.New())
 	app.Use(recover.New())
+
+	route.HttpRouteInit(app, containerConf)
 
 	c := make(chan os.Signal, 1)
 	signal.Notify(c, os.Interrupt)

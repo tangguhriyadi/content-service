@@ -21,6 +21,8 @@ func NewPostgreConnection() Postgre {
 	return &PostgreImpl{}
 }
 
+var DB *gorm.DB
+
 func (ps PostgreImpl) Connect() (*gorm.DB, error) {
 	env := config.New()
 	dsn := fmt.Sprintf(
@@ -55,6 +57,8 @@ func (ps PostgreImpl) Connect() (*gorm.DB, error) {
 	sqlDB.SetConnMaxLifetime(60 * time.Minute)
 	sqlDB.SetConnMaxIdleTime(10 * time.Minute)
 
-	return db, nil
+	DB = db
+
+	return DB, nil
 
 }

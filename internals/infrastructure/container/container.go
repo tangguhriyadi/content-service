@@ -20,13 +20,11 @@ func InitContainer() (cont *Container) {
 	// setup postgre
 	postgre := db.NewPostgreConnection()
 
-	_, err := postgre.Connect()
+	db, err := postgre.Connect()
 
 	if err != nil {
 		log.Println(err)
 	}
-
-	var db *gorm.DB
 
 	return &Container{
 		Validator: validate,
