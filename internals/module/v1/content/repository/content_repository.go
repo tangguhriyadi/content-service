@@ -25,9 +25,9 @@ func NewContentRepository(db *gorm.DB) ContentRepository {
 
 func (ct ContentRepositoryImpl) GetAll(c context.Context, page int, limit int) (dto.ContentPaginate, error) {
 	var contents []entity.Content
-	var count int32
+	var count int64
 
-	countResult := ct.db.WithContext(c).Model(&[]entity.Content{}).Where("deleted =?", false)
+	countResult := ct.db.WithContext(c).Model(&[]entity.Content{}).Where("deleted =?", false).Count(&count)
 	if countResult.Error != nil {
 		return dto.ContentPaginate{}, nil
 	}

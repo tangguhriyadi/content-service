@@ -16,7 +16,7 @@ type ContentPaginate struct {
 	Data       *[]entity.Content
 	Page       int
 	Limit      int
-	TotalItems int32
+	TotalItems int64
 }
 
 type ContentPayload struct {
