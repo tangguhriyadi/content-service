@@ -17,4 +17,5 @@ func ContentRoutes(r fiber.Router, containerConf *container.Container) {
 	r.Get("/", middleware.JWTProtect(), controller.GetAll)
 	r.Post("/", middleware.JWTProtect(), controller.Create)
 	r.Get("/:id", middleware.JWTProtect(), controller.GetById)
+	r.Patch("/:id", middleware.JWTProtect(), controller.Update)
 }

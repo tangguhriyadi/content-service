@@ -16,6 +16,7 @@ type ContentController interface {
 	GetAll(ctx *fiber.Ctx) error
 	Create(ctx *fiber.Ctx) error
 	GetById(ctx *fiber.Ctx) error
+	Update(ctx *fiber.Ctx) error
 }
 
 type ContentControllerImpl struct {
@@ -107,4 +108,29 @@ func (cc ContentControllerImpl) GetById(ctx *fiber.Ctx) error {
 	}
 
 	return helper.ApiResponse(ctx, true, "Success Get", "", result, fiber.StatusOK)
+}
+
+func (cc ContentControllerImpl) Update(ctx *fiber.Ctx) error {
+	var c = ctx.Context()
+	var userId = ctx.Params("id")
+	var payload dto.ContentPayload
+
+	// param validator
+	user_id, err := strconv.Atoi(userId)
+	if err != nil {
+		return helper.ApiResponse(ctx, false, "Bad Request", err.Error(), nil, fiber.StatusBadRequest)
+	}
+
+	//body parsing
+	if err := ctx.BodyParser(&payload); err != nil {
+		return helper.ApiResponse(ctx, false, "Bad Request", err.Error(), nil, fiber.StatusBadRequest)
+	}
+
+	// run business logic
+	res := cc.contentService.Update(c, user_id, &payload)
+	if res != nil {
+		return helper.ApiResponse(ctx, false, "Internal Server Error", res.Error(), nil, fiber.StatusBadRequest)
+	}
+
+	return helper.ApiResponse(ctx, true, "Success Update", "", nil, fiber.StatusOK)
 }

@@ -12,6 +12,7 @@ type ContentRepository interface {
 	GetAll(c context.Context, page int, limit int) (dto.ContentPaginate, error)
 	Create(c context.Context, payload *dto.ContentCreate) error
 	GetById(c context.Context, id int) (dto.Content, error)
+	Update(c context.Context, id int, payload *dto.ContentPayload) error
 }
 
 type ContentRepositoryImpl struct {
@@ -71,4 +72,20 @@ func (ct ContentRepositoryImpl) GetById(c context.Context, id int) (dto.Content,
 	}
 
 	return content, nil
+}
+
+func (ct ContentRepositoryImpl) Update(c context.Context, id int, payload *dto.ContentPayload) error {
+
+	var content dto.Content
+
+	content.IsPremium = payload.IsPremium
+	content.Name = payload.Name
+
+	result := ct.db.WithContext(c).Where("id =?", id).Updates(content)
+
+	if result.Error != nil {
+		return result.Error
+	}
+
+	return nil
 }

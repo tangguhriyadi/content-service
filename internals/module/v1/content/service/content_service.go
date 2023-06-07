@@ -2,6 +2,7 @@ package service
 
 import (
 	"context"
+	"errors"
 
 	"github.com/tangguhriyadi/content-service/internals/module/v1/content/dto"
 	"github.com/tangguhriyadi/content-service/internals/module/v1/content/repository"
@@ -11,6 +12,7 @@ type ContentService interface {
 	GetAll(c context.Context, page int, limit int) (dto.ContentPaginate, error)
 	Create(c context.Context, payload dto.ContentPayload, user_id int32) error
 	GetById(c context.Context, id int) (dto.Content, error)
+	Update(c context.Context, id int, payload *dto.ContentPayload) error
 }
 
 type contentServiceImpl struct {
@@ -55,4 +57,18 @@ func (cs contentServiceImpl) GetById(c context.Context, id int) (dto.Content, er
 	}
 
 	return result, nil
+}
+
+func (cs contentServiceImpl) Update(c context.Context, id int, payload *dto.ContentPayload) error {
+	_, err := cs.contentRepository.GetById(c, id)
+	if err != nil {
+		return errors.New("Content not found")
+	}
+
+	errors := cs.contentRepository.Update(c, id, payload)
+	if errors != nil {
+		return errors
+	}
+
+	return nil
 }
