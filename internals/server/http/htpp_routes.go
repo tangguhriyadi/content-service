@@ -8,9 +8,8 @@ import (
 )
 
 func HttpRouteInit(r *fiber.App, containerConf *container.Container) {
-	api := r.Group("/v1")
 
-	contentApi := api.Group("/contents")
+	contentApi := r.Group("/")
 	content.ContentRoutes(contentApi, containerConf)
 
 	r.Use(func(ctx *fiber.Ctx) error {

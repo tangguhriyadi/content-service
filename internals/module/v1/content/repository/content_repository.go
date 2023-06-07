@@ -11,6 +11,7 @@ import (
 type ContentRepository interface {
 	GetAll(c context.Context, page int, limit int) (dto.ContentPaginate, error)
 	Create(c context.Context, payload *dto.ContentCreate) error
+	GetById(c context.Context, id int) (dto.Content, error)
 }
 
 type ContentRepositoryImpl struct {
@@ -59,4 +60,15 @@ func (ct ContentRepositoryImpl) Create(c context.Context, payload *dto.ContentCr
 	}
 
 	return nil
+}
+
+func (ct ContentRepositoryImpl) GetById(c context.Context, id int) (dto.Content, error) {
+	var content dto.Content
+
+	result := ct.db.WithContext(c).First(&content, id)
+	if result.Error != nil {
+		return dto.Content{}, result.Error
+	}
+
+	return content, nil
 }
