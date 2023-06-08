@@ -8,17 +8,16 @@ import (
 	"github.com/tangguhriyadi/content-service/internals/module/v1/content"
 )
 
-// @securityDefinitions.apikey Bearer
+// @securityDefinitions.apikey BearerAuth
 // @in header
 // @name Authorization
 // @description Type "Bearer" followed by a space and JWT token.
 func HttpRouteInit(r *fiber.App, containerConf *container.Container) {
 
-	r.Get("/documentation/contents/*", fiberSwagger.WrapHandler)
-
 	contentApi := r.Group("/")
 	content.ContentRoutes(contentApi, containerConf)
 
+	r.Get("/documentation/*", fiberSwagger.WrapHandler)
 	r.Use(func(ctx *fiber.Ctx) error {
 		return helper.ApiResponse(ctx, true, "NOT FOUND", "", nil, fiber.StatusOK)
 	})

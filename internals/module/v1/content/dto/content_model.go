@@ -4,12 +4,12 @@ import "github.com/tangguhriyadi/content-service/internals/entity"
 
 type Content struct {
 	ID           int32  `gorm:"primaryKey" json:"id"`
-	Name         string `gorm:"type:varchar(300)" json:"name"`
+	Name         string `gorm:"type:varchar(300)" json:"name" validate:"required"`
 	LikeCount    int32  `gorm:"type:int" json:"like_count"`
 	CommentCount int32  `gorm:"type:int" json:"comment_count"`
 	OwnerID      int32  `gorm:"type:int" json:"owner_id"`
 	TypeID       int32  `gorm:"type:int" json:"type_id"`
-	IsPremium    bool   `gorm:"type:bool" json:"is_premium"`
+	IsPremium    bool   `gorm:"type:bool; default:false" json:"is_premium"`
 }
 
 type ContentPaginate struct {

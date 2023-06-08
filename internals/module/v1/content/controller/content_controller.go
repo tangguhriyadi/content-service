@@ -33,13 +33,14 @@ func NewContentController(validate *validator.Validate, contentService service.C
 }
 
 // ShowAccount godoc
-// @Summary      Show an account
-// @Description  get string by ID
-// @Tags         accounts
+// @Summary      get content list
+// @Description  get content list
+// @Tags         contents
 // @Accept       json
 // @Produce      json
 // @Success      200  {object}  dto.ContentPaginate
 // @Router       /contents [get]
+// @Security 	 Bearer
 func (cc ContentControllerImpl) GetAll(ctx *fiber.Ctx) error {
 	c := ctx.Context()
 
@@ -71,6 +72,17 @@ func (cc ContentControllerImpl) GetAll(ctx *fiber.Ctx) error {
 
 	return ctx.Status(fiber.StatusOK).JSON(result)
 }
+
+// ShowAccount godoc
+// @Summary      create content
+// @Description  create content
+// @Tags         contents
+// @Accept       json
+// @Produce      json
+// @Param payload body dto.ContentPayload true "The input struct"
+// @Success      200  {object}  dto.Content
+// @Router       /contents/:id [post]
+// @Security 	 Bearer
 func (cc ContentControllerImpl) Create(ctx *fiber.Ctx) error {
 	var c = ctx.Context()
 	var payload dto.ContentPayload
@@ -100,6 +112,16 @@ func (cc ContentControllerImpl) Create(ctx *fiber.Ctx) error {
 
 }
 
+// ShowAccount godoc
+// @Summary      get content by ID
+// @Description  get content by ID
+// @Tags         contents
+// @Accept       json
+// @Produce      json
+// @Param id path string true "Content ID"
+// @Success      200  {object}  dto.Content
+// @Router       /contents/:id [get]
+// @Security 	 Bearer
 func (cc ContentControllerImpl) GetById(ctx *fiber.Ctx) error {
 	var c = ctx.Context()
 	var userId = ctx.Params("id")
@@ -119,6 +141,16 @@ func (cc ContentControllerImpl) GetById(ctx *fiber.Ctx) error {
 	return helper.ApiResponse(ctx, true, "Success Get", "", result, fiber.StatusOK)
 }
 
+// ShowAccount godoc
+// @Summary      update content
+// @Description  update content
+// @Tags         contents
+// @Accept       json
+// @Produce      json
+// @Param id path string true "Content ID"
+// @Success      200  {object}  dto.ContentPayload
+// @Router       /contents/:id [patch]
+// @Security 	 Bearer
 func (cc ContentControllerImpl) Update(ctx *fiber.Ctx) error {
 	var c = ctx.Context()
 	var userId = ctx.Params("id")
@@ -144,6 +176,16 @@ func (cc ContentControllerImpl) Update(ctx *fiber.Ctx) error {
 	return helper.ApiResponse(ctx, true, "Success Update", "", nil, fiber.StatusOK)
 }
 
+// ShowAccount godoc
+// @Summary      delete content
+// @Description  delete content
+// @Tags         contents
+// @Accept       json
+// @Produce      json
+// @Param id path string true "Content ID"
+// @Success      200  {object}  dto.Content
+// @Router       /contents/:id [delete]
+// @Security 	 Bearer
 func (cc ContentControllerImpl) Delete(ctx *fiber.Ctx) error {
 	var c = ctx.Context()
 	var userId = ctx.Params("id")
