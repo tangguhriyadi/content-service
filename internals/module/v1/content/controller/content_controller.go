@@ -32,6 +32,14 @@ func NewContentController(validate *validator.Validate, contentService service.C
 	}
 }
 
+// ShowAccount godoc
+// @Summary      Show an account
+// @Description  get string by ID
+// @Tags         accounts
+// @Accept       json
+// @Produce      json
+// @Success      200  {object}  dto.ContentPaginate
+// @Router       /contents [get]
 func (cc ContentControllerImpl) GetAll(ctx *fiber.Ctx) error {
 	c := ctx.Context()
 
