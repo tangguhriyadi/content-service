@@ -15,7 +15,7 @@ import (
 	route "github.com/tangguhriyadi/content-service/internals/server/http"
 )
 
-// @securityDefinitions.apikey BearerAuth
+// @securityDefinitions.apikey Bearer
 // @in header
 // @name Authorization
 // @description Type "Bearer" followed by a space and JWT token.

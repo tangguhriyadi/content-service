@@ -178,7 +178,7 @@ paths:
       tags:
       - contents
 securityDefinitions:
-  BearerAuth:
+  Bearer:
     description: Type "Bearer" followed by a space and JWT token.
     in: header
     name: Authorization
