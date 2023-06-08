@@ -1,11 +1,11 @@
 package token
 
 import (
+	"os"
 	"strings"
 
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gofiber/fiber/v2"
-	"github.com/tangguhriyadi/content-service/internals/config"
 )
 
 type TokenMetadata struct {
@@ -62,6 +62,6 @@ func extractToken(c *fiber.Ctx) string {
 }
 
 func jwtKeyFunc(token *jwt.Token) (interface{}, error) {
-	env := config.New()
-	return []byte(env.Get("JWT_SECRET_KEY")), nil
+	// env := config.New()
+	return []byte(os.Getenv("JWT_SECRET_KEY")), nil
 }

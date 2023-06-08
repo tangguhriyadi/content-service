@@ -2,9 +2,9 @@ package db
 
 import (
 	"fmt"
+	"os"
 	"time"
 
-	"github.com/tangguhriyadi/content-service/internals/config"
 	"github.com/tangguhriyadi/content-service/internals/entity"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
@@ -24,14 +24,14 @@ func NewPostgreConnection() Postgre {
 var DB *gorm.DB
 
 func (ps PostgreImpl) Connect() (*gorm.DB, error) {
-	env := config.New()
+	// env := config.New()
 	dsn := fmt.Sprintf(
 		"postgres://%s:%s@%s:%s/%s?sslmode=disable",
-		env.Get("DB_POSTGRE_USER"),
-		env.Get("DB_POSTGRE_PASSWORD"),
-		env.Get("DB_POSTGRE_HOST"),
-		env.Get("DB_POSTGRE_PORT"),
-		env.Get("DB_POSTGRE_DBNAME"),
+		os.Getenv("DB_POSTGRE_USER"),
+		os.Getenv("DB_POSTGRE_PASSWORD"),
+		os.Getenv("DB_POSTGRE_HOST"),
+		os.Getenv("DB_POSTGRE_PORT"),
+		os.Getenv("DB_POSTGRE_DBNAME"),
 	)
 
 	//start connection
