@@ -11,8 +11,9 @@ import (
 type ContentRepository interface {
 	GetAll(c context.Context, page int, limit int) (dto.ContentPaginate, error)
 	Create(c context.Context, payload *dto.ContentCreate) error
-	GetById(c context.Context, id int) (dto.Content, error)
-	Update(c context.Context, id int, payload *dto.ContentPayload) error
+	GetById(c context.Context, id int) (entity.Content, error)
+	Update(c context.Context, id int, payload *dto.Content) error
+	Delete(c context.Context, id int, payload *entity.Content) error
 }
 
 type ContentRepositoryImpl struct {
@@ -63,25 +64,32 @@ func (ct ContentRepositoryImpl) Create(c context.Context, payload *dto.ContentCr
 	return nil
 }
 
-func (ct ContentRepositoryImpl) GetById(c context.Context, id int) (dto.Content, error) {
-	var content dto.Content
+func (ct ContentRepositoryImpl) GetById(c context.Context, id int) (entity.Content, error) {
+	var content entity.Content
 
-	result := ct.db.WithContext(c).First(&content, id)
+	result := ct.db.WithContext(c).Where("deleted =?", false).First(&content, id)
+
 	if result.Error != nil {
-		return dto.Content{}, result.Error
+		return entity.Content{}, result.Error
 	}
 
 	return content, nil
 }
 
-func (ct ContentRepositoryImpl) Update(c context.Context, id int, payload *dto.ContentPayload) error {
+func (ct ContentRepositoryImpl) Update(c context.Context, id int, payload *dto.Content) error {
 
-	var content dto.Content
+	result := ct.db.WithContext(c).Where("id =?", id).Updates(payload)
 
-	content.IsPremium = payload.IsPremium
-	content.Name = payload.Name
+	if result.Error != nil {
+		return result.Error
+	}
 
-	result := ct.db.WithContext(c).Where("id =?", id).Updates(content)
+	return nil
+}
+
+func (ct ContentRepositoryImpl) Delete(c context.Context, id int, payload *entity.Content) error {
+
+	result := ct.db.WithContext(c).Where("id =?", id).Updates(&payload)
 
 	if result.Error != nil {
 		return result.Error

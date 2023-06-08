@@ -17,6 +17,7 @@ type ContentController interface {
 	Create(ctx *fiber.Ctx) error
 	GetById(ctx *fiber.Ctx) error
 	Update(ctx *fiber.Ctx) error
+	Delete(ctx *fiber.Ctx) error
 }
 
 type ContentControllerImpl struct {
@@ -133,4 +134,23 @@ func (cc ContentControllerImpl) Update(ctx *fiber.Ctx) error {
 	}
 
 	return helper.ApiResponse(ctx, true, "Success Update", "", nil, fiber.StatusOK)
+}
+
+func (cc ContentControllerImpl) Delete(ctx *fiber.Ctx) error {
+	var c = ctx.Context()
+	var userId = ctx.Params("id")
+
+	// param validator
+	user_id, err := strconv.Atoi(userId)
+	if err != nil {
+		return helper.ApiResponse(ctx, false, "Bad Request", err.Error(), nil, fiber.StatusBadRequest)
+	}
+
+	// run business logic
+	res := cc.contentService.Delete(c, user_id)
+	if res != nil {
+		return helper.ApiResponse(ctx, false, "Bad Request", res.Error(), nil, fiber.StatusBadRequest)
+	}
+
+	return helper.ApiResponse(ctx, true, "Success Delete", "", nil, fiber.StatusOK)
 }
