@@ -148,6 +148,7 @@ func (cc ContentControllerImpl) GetById(ctx *fiber.Ctx) error {
 // @Accept       json
 // @Produce      json
 // @Param id path string true "Content ID"
+// @Param payload body dto.ContentPayload true "The input struct"
 // @Success      200  {object}  dto.ContentPayload
 // @Router       /contents/:id [patch]
 // @Security 	 Bearer
