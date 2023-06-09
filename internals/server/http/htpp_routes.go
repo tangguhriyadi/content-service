@@ -6,6 +6,7 @@ import (
 	"github.com/tangguhriyadi/content-service/internals/helper"
 	"github.com/tangguhriyadi/content-service/internals/infrastructure/container"
 	"github.com/tangguhriyadi/content-service/internals/module/v1/content"
+	contentType "github.com/tangguhriyadi/content-service/internals/module/v1/content_type"
 )
 
 // @securityDefinitions.apikey BearerAuth
@@ -16,6 +17,7 @@ func HttpRouteInit(r *fiber.App, containerConf *container.Container) {
 
 	contentApi := r.Group("/")
 	content.ContentRoutes(contentApi, containerConf)
+	contentType.ContentTypeRoutes(contentApi, containerConf)
 
 	r.Get("/documentation/*", fiberSwagger.WrapHandler)
 	r.Use(func(ctx *fiber.Ctx) error {

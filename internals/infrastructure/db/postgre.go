@@ -46,10 +46,9 @@ func (ps PostgreImpl) Connect() (*gorm.DB, error) {
 	}
 
 	// database migration
-	go func() {
-		db.AutoMigrate(&entity.Content{})
-		db.AutoMigrate(&entity.ContentCategory{})
-	}()
+	db.AutoMigrate(&entity.Content{})
+	db.AutoMigrate(&entity.ContentCategory{})
+	db.AutoMigrate(&entity.ContentType{})
 
 	// rules of usage
 	sqlDB.SetMaxIdleConns(5)

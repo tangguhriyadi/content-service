@@ -40,6 +40,26 @@ definitions:
     required:
     - name
     type: object
+  dto.ContentType:
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+    type: object
+  dto.ContentTypePaginate:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/dto.ContentType'
+        type: array
+      limit:
+        type: integer
+      page:
+        type: integer
+      totalItems:
+        type: integer
+    type: object
   entity.Content:
     properties:
       comment_count:
@@ -181,6 +201,32 @@ paths:
       security:
       - Bearer: []
       summary: create content
+      tags:
+      - contents
+  /contents/type:
+    get:
+      consumes:
+      - application/json
+      description: get content type list
+      parameters:
+      - description: page
+        in: query
+        name: page
+        type: string
+      - description: limit page
+        in: query
+        name: limit
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.ContentTypePaginate'
+      security:
+      - Bearer: []
+      summary: get content type list
       tags:
       - contents
 securityDefinitions:
