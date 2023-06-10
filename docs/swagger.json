@@ -185,7 +185,7 @@
                 }
             }
         },
-        "/contents/type": {
+        "/contents/types": {
             "get": {
                 "security": [
                     {

@@ -203,7 +203,7 @@ paths:
       summary: create content
       tags:
       - contents
-  /contents/type:
+  /contents/types:
     get:
       consumes:
       - application/json

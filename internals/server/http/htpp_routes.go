@@ -15,9 +15,11 @@ import (
 // @description Type "Bearer" followed by a space and JWT token.
 func HttpRouteInit(r *fiber.App, containerConf *container.Container) {
 
-	contentApi := r.Group("/")
+	contentApi := r.Group("/dapur")
 	content.ContentRoutes(contentApi, containerConf)
-	contentType.ContentTypeRoutes(contentApi, containerConf)
+
+	contentTypeApi := r.Group("/types")
+	contentType.ContentTypeRoutes(contentTypeApi, containerConf)
 
 	r.Get("/documentation/*", fiberSwagger.WrapHandler)
 	r.Use(func(ctx *fiber.Ctx) error {

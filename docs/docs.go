@@ -197,7 +197,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/contents/type": {
+        "/contents/types": {
             "get": {
                 "security": [
                     {
