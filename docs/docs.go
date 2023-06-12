@@ -197,7 +197,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/contents/types": {
+        "/contents/:id/types": {
             "get": {
                 "security": [
                     {
@@ -212,7 +212,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "contents"
+                    "types"
                 ],
                 "summary": "get content type list",
                 "parameters": [
@@ -227,6 +227,48 @@ const docTemplate = `{
                         "description": "limit page",
                         "name": "limit",
                         "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dto.ContentTypePaginate"
+                        }
+                    }
+                }
+            }
+        },
+        "/contents/:id/types/:type_id": {
+            "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "get content type by id",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "types"
+                ],
+                "summary": "get content type by id",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "id",
+                        "name": "id",
+                        "in": "path"
+                    },
+                    {
+                        "type": "string",
+                        "description": "type_id",
+                        "name": "type_id",
+                        "in": "path"
                     }
                 ],
                 "responses": {

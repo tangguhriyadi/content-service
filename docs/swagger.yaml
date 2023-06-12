@@ -203,7 +203,7 @@ paths:
       summary: create content
       tags:
       - contents
-  /contents/types:
+  /contents/:id/types:
     get:
       consumes:
       - application/json
@@ -228,7 +228,33 @@ paths:
       - Bearer: []
       summary: get content type list
       tags:
-      - contents
+      - types
+  /contents/:id/types/:type_id:
+    get:
+      consumes:
+      - application/json
+      description: get content type by id
+      parameters:
+      - description: id
+        in: path
+        name: id
+        type: string
+      - description: type_id
+        in: path
+        name: type_id
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.ContentTypePaginate'
+      security:
+      - Bearer: []
+      summary: get content type by id
+      tags:
+      - types
 securityDefinitions:
   Bearer:
     description: Type "Bearer" followed by a space and JWT token.

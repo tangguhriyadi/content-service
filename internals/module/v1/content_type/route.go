@@ -14,5 +14,6 @@ func ContentTypeRoutes(r fiber.Router, containerConf *container.Container) {
 	service := service.NewContentTypeService(repository)
 	controller := controller.NewContentTypeController(containerConf.Validator, service)
 
-	r.Get("/", middleware.JWTProtect(), controller.GetAll)
+	r.Get("/:id/types", middleware.JWTProtect(), controller.GetAll)
+	r.Get("/:id/types/:type_id", middleware.JWTProtect(), controller.GetById)
 }

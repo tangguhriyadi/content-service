@@ -11,6 +11,7 @@ import (
 
 type ContentTypeController interface {
 	GetAll(ctx *fiber.Ctx) error
+	GetById(ctx *fiber.Ctx) error
 }
 
 type ContentTypeControllerImpl struct {
@@ -28,13 +29,13 @@ func NewContentTypeController(validate *validator.Validate, contentTypeService s
 // ShowAccount godoc
 // @Summary      get content type list
 // @Description  get content type list
-// @Tags         contents
+// @Tags         types
 // @Accept       json
 // @Produce      json
 // @Param	page query	string	false	"page"
 // @Param	limit query	string	false	"limit page"
 // @Success      200  {object}  dto.ContentTypePaginate
-// @Router       /contents/types [get]
+// @Router       /contents/:id/types [get]
 // @Security 	 Bearer
 func (ct ContentTypeControllerImpl) GetAll(ctx *fiber.Ctx) error {
 	c := ctx.Context()
@@ -62,4 +63,39 @@ func (ct ContentTypeControllerImpl) GetAll(ctx *fiber.Ctx) error {
 	}
 
 	return helper.ApiResponse(ctx, true, "Success Get List", "", &result, fiber.StatusOK)
+}
+
+// ShowAccount godoc
+// @Summary      get content type by id
+// @Description  get content type by id
+// @Tags         types
+// @Accept       json
+// @Produce      json
+// @Param	id path	string	false	"id"
+// @Param	type_id path	string	false	"type_id"
+// @Success      200  {object}  dto.ContentTypePaginate
+// @Router       /contents/:id/types/:type_id [get]
+// @Security 	 Bearer
+func (ct ContentTypeControllerImpl) GetById(ctx *fiber.Ctx) error {
+	c := ctx.Context()
+	var id = ctx.Params("type_id")
+
+	//param validator
+	typeId, err := strconv.Atoi(id)
+	if err != nil {
+		return helper.ApiResponse(ctx, false, "Bad Request", err.Error(), nil, fiber.StatusBadRequest)
+	}
+
+	//run business logic
+	result, err := ct.contentTypeService.GetById(c, typeId)
+	if err != nil {
+		return helper.ApiResponse(ctx, false, "Bad Request", err.Error(), nil, fiber.StatusBadRequest)
+	}
+
+	if result.ID == 0 {
+		return helper.ApiResponse(ctx, false, "No Data Found", "", nil, fiber.StatusBadRequest)
+	}
+
+	return helper.ApiResponse(ctx, true, "Success Get By Id", "", result, fiber.StatusOK)
+
 }

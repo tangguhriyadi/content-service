@@ -9,6 +9,7 @@ import (
 
 type ContentTypeService interface {
 	GetAll(c context.Context, page int, limit int) (dto.ContentTypePaginate, error)
+	GetById(c context.Context, id int) (dto.ContentType, error)
 }
 
 type ContentTypeServiceImpl struct {
@@ -27,4 +28,18 @@ func (ct ContentTypeServiceImpl) GetAll(c context.Context, page int, limit int) 
 		return dto.ContentTypePaginate{}, nil
 	}
 	return result, nil
+}
+
+func (ct ContentTypeServiceImpl) GetById(c context.Context, id int) (dto.ContentType, error) {
+	result, err := ct.contentTypeRepository.GetById(c, id)
+	if err != nil {
+		return dto.ContentType{}, err
+	}
+
+	var contentType dto.ContentType
+
+	contentType.ID = result.ID
+	contentType.Name = result.Name
+
+	return contentType, nil
 }

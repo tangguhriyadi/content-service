@@ -2,6 +2,7 @@ package repository
 
 import (
 	"context"
+	"errors"
 
 	"github.com/tangguhriyadi/content-service/internals/entity"
 	"github.com/tangguhriyadi/content-service/internals/module/v1/content_type/dto"
@@ -10,6 +11,7 @@ import (
 
 type ContentTypeRepository interface {
 	GetAll(c context.Context, page int, limit int) (dto.ContentTypePaginate, error)
+	GetById(c context.Context, id int) (entity.ContentType, error)
 }
 
 type ContentTypeRepositoryImpl struct {
@@ -54,4 +56,20 @@ func (ct ContentTypeRepositoryImpl) GetAll(c context.Context, page int, limit in
 
 	return response, nil
 
+}
+
+func (ct ContentTypeRepositoryImpl) GetById(c context.Context, id int) (entity.ContentType, error) {
+	var contentType entity.ContentType
+
+	result := ct.db.WithContext(c).Where("deleted =?", false).First(&contentType, id)
+
+	if errors.Is(result.Error, gorm.ErrRecordNotFound) {
+		return entity.ContentType{}, nil
+	}
+
+	if result.Error != nil {
+		return entity.ContentType{}, result.Error
+	}
+
+	return contentType, nil
 }
