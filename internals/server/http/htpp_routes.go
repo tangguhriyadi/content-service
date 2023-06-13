@@ -17,9 +17,7 @@ func HttpRouteInit(r *fiber.App, containerConf *container.Container) {
 
 	contentApi := r.Group("/")
 	content.ContentRoutes(contentApi, containerConf)
-
-	contentTypeApi := r.Group("/")
-	contentType.ContentTypeRoutes(contentTypeApi, containerConf)
+	contentType.ContentTypeRoutes(contentApi, containerConf)
 
 	r.Get("/documentation/*", fiberSwagger.WrapHandler)
 	r.Use(func(ctx *fiber.Ctx) error {
