@@ -45,5 +45,5 @@ jobs:
             whoami
             docker stop ${{ vars.CONTAINER_NAME }} || true && docker container rm ${{vars.CONTAINER_NAME}} || true && docker image rm -f tangguhriyadi/${{ vars.IMAGE_NAME }} || true
             docker pull tangguhriyadi/${{  vars.IMAGE_NAME  }}:latest
-            docker run -d -p 8082:8082 --name ${{ vars.CONTAINER_NAME }} -e DB_POSTGRES_DBNAME=${{ secrets.DB_POSTGRES_DBNAME }} -e DB_POSTGRES_HOST=${{ secrets.DB_POSTGRES_HOST }} -e DB_POSTGRES_PORT=${{ secrets.DB_POSTGRES_PORT }} -e DB_POSTGRES_PASSWORD=${{ secrets.DB_POSTGRES_PASSWORD }} -e DB_POSTGRES_USER=${{ secrets.DB_POSTGRES_USER }} -e JWT_SECRET_KEY=${{secrets.JWT_SECRET_KEY}} tangguhriyadi/${{ vars.IMAGE_NAME }}:latest
+            docker run -d -p 8082:8082 --name ${{ vars.CONTAINER_NAME }} -e DB_POSTGRE_DBNAME=${{ secrets.DB_POSTGRE_DBNAME }} -e DB_POSTGRE_HOST=${{ secrets.DB_POSTGRE_HOST }} -e DB_POSTGRE_PORT=${{ secrets.DB_POSTGRE_PORT }} -e DB_POSTGRE_PASSWORD=${{ secrets.DB_POSTGRE_PASSWORD }} -e DB_POSTGRE_USER=${{ secrets.DB_POSTGRE_USER }} -e JWT_SECRET_KEY=${{secrets.JWT_SECRET_KEY}} tangguhriyadi/${{ vars.IMAGE_NAME }}:latest
           '
