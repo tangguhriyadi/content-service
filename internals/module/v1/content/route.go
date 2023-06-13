@@ -10,6 +10,9 @@ import (
 )
 
 func ContentRoutes(r fiber.Router, containerConf *container.Container) {
+
+	// userGrpc := grpc.NewGrcpUser(containerConf.GrpcClient)
+
 	repository := repository.NewContentRepository(containerConf.Postgre)
 	service := service.NewContentService(repository)
 	controller := controller.NewContentController(containerConf.Validator, service)

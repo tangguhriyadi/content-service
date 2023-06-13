@@ -5,6 +5,7 @@ import (
 	"errors"
 	"time"
 
+	"github.com/tangguhriyadi/content-service/internals/infrastructure/grpc"
 	"github.com/tangguhriyadi/content-service/internals/module/v1/content/dto"
 	"github.com/tangguhriyadi/content-service/internals/module/v1/content/repository"
 )
@@ -12,7 +13,7 @@ import (
 type ContentService interface {
 	GetAll(c context.Context, page int, limit int) (dto.ContentPaginate, error)
 	Create(c context.Context, payload dto.ContentPayload, user_id int32) error
-	GetById(c context.Context, id int) (dto.Content, error)
+	GetById(c context.Context, id int) (dto.NewContent, error)
 	Update(c context.Context, id int, payload *dto.ContentPayload) error
 	Delete(c context.Context, id int) error
 }
@@ -51,20 +52,30 @@ func (cs contentServiceImpl) Create(c context.Context, payload dto.ContentPayloa
 	return nil
 }
 
-func (cs contentServiceImpl) GetById(c context.Context, id int) (dto.Content, error) {
+func (cs contentServiceImpl) GetById(c context.Context, id int) (dto.NewContent, error) {
 	result, err := cs.contentRepository.GetById(c, id)
 
 	if err != nil {
-		return dto.Content{}, errors.New("content not found")
+		return dto.NewContent{}, errors.New("content not found")
 	}
 
-	var content dto.Content
+	userGrpc, err := grpc.NewGrpcDial().GetUserData(result.OwnerID)
+	if err != nil {
+		return dto.NewContent{}, err
+	}
+
+	var user dto.User
+	user.Age = userGrpc.Age
+	user.Email = userGrpc.Email
+	user.FullName = userGrpc.FullName
+
+	var content dto.NewContent
 	content.ID = result.ID
 	content.CommentCount = result.CommentCount
 	content.IsPremium = result.IsPremium
 	content.LikeCount = result.LikeCount
 	content.Name = result.Name
-	content.OwnerID = result.OwnerID
+	content.Owner = &user
 	content.TypeID = result.TypeID
 
 	return content, nil

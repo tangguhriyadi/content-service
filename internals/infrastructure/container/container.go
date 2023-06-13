@@ -11,6 +11,7 @@ import (
 type Container struct {
 	Validator *validator.Validate
 	Postgre   *gorm.DB
+	// GrpcClient pb.UserServiceClient
 }
 
 func InitContainer() (cont *Container) {
@@ -21,14 +22,22 @@ func InitContainer() (cont *Container) {
 	postgre := db.NewPostgreConnection()
 
 	db, err := postgre.Connect()
-
 	if err != nil {
 		log.Println(err)
 	}
 
+	// // setup gRPC
+	// GRPC := grpc.NewGrpcDial()
+
+	// grpcClient, err := GRPC.Connect()
+	// if err != nil {
+	// 	log.Fatalln(err)
+	// }
+
 	return &Container{
 		Validator: validate,
 		Postgre:   db,
+		// GrpcClient: grpcClient,
 	}
 
 }
