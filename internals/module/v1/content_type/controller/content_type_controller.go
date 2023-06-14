@@ -6,12 +6,15 @@ import (
 	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v2"
 	"github.com/tangguhriyadi/content-service/internals/helper"
+	"github.com/tangguhriyadi/content-service/internals/module/v1/content_type/dto"
 	"github.com/tangguhriyadi/content-service/internals/module/v1/content_type/service"
+	"github.com/tangguhriyadi/content-service/internals/security/token"
 )
 
 type ContentTypeController interface {
 	GetAll(ctx *fiber.Ctx) error
 	GetById(ctx *fiber.Ctx) error
+	Create(ctx *fiber.Ctx) error
 }
 
 type ContentTypeControllerImpl struct {
@@ -98,4 +101,31 @@ func (ct ContentTypeControllerImpl) GetById(ctx *fiber.Ctx) error {
 
 	return helper.ApiResponse(ctx, true, "Success Get By Id", "", result, fiber.StatusOK)
 
+}
+
+func (ct ContentTypeControllerImpl) Create(ctx *fiber.Ctx) error {
+	var c = ctx.Context()
+	var payload dto.ContentTypePayload
+
+	//body parsing
+	if err := ctx.BodyParser(&payload); err != nil {
+		return helper.ApiResponse(ctx, false, "Bad Request", err.Error(), nil, fiber.StatusBadRequest)
+	}
+
+	//request body validation
+	if err := ct.validate.Struct(&payload); err != nil {
+		return helper.ApiResponse(ctx, false, "Bad Request", err.Error(), nil, fiber.StatusBadRequest)
+	}
+
+	//claim token
+	_, err := token.ExtractTokenMetada(ctx)
+	if err != nil {
+		return helper.ApiResponse(ctx, false, "Forbidden", err.Error(), nil, fiber.StatusForbidden)
+	}
+
+	if err := ct.contentTypeService.Create(c, &payload); err != nil {
+		return helper.ApiResponse(ctx, true, "Bad Request", err.Error(), nil, fiber.StatusBadRequest)
+	}
+
+	return helper.ApiResponse(ctx, true, "Create Success", "", &payload, fiber.StatusCreated)
 }

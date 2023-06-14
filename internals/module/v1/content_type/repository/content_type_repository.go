@@ -12,6 +12,8 @@ import (
 type ContentTypeRepository interface {
 	GetAll(c context.Context, page int, limit int) (dto.ContentTypePaginate, error)
 	GetById(c context.Context, id int) (entity.ContentType, error)
+	Create(c context.Context, payload *dto.ContentTypePayload) error
+	Update(c context.Context, id int, payload *dto.ContentTypePayload) error
 }
 
 type ContentTypeRepositoryImpl struct {
@@ -72,4 +74,27 @@ func (ct ContentTypeRepositoryImpl) GetById(c context.Context, id int) (entity.C
 	}
 
 	return contentType, nil
+}
+
+func (ct ContentTypeRepositoryImpl) Update(c context.Context, id int, payload *dto.ContentTypePayload) error {
+	result := ct.db.WithContext(c).Where("id =?", id).Updates(payload)
+
+	if result.Error != nil {
+		return result.Error
+	}
+
+	return nil
+}
+
+func (ct ContentTypeRepositoryImpl) Create(c context.Context, payload *dto.ContentTypePayload) error {
+	var content = entity.ContentType{
+		Name: payload.Name,
+	}
+
+	result := ct.db.WithContext(c).Create(&content)
+	if result.Error != nil {
+		return result.Error
+	}
+
+	return nil
 }

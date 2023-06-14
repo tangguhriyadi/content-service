@@ -9,5 +9,9 @@ type ContentTypePaginate struct {
 
 type ContentType struct {
 	ID   int32  `gorm:"primaryKey" json:"id"`
-	Name string `gorm:"type:int" json:"name"`
+	Name string `gorm:"type:varchar(300)" json:"name"`
+}
+
+type ContentTypePayload struct {
+	Name string `gorm:"type:archar(300)" json:"name"`
 }

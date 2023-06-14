@@ -10,6 +10,8 @@ import (
 type ContentTypeService interface {
 	GetAll(c context.Context, page int, limit int) (dto.ContentTypePaginate, error)
 	GetById(c context.Context, id int) (dto.ContentType, error)
+	// Update(c context.Context, id int, payload *dto.ContentType) error
+	Create(c context.Context, payload *dto.ContentTypePayload) error
 }
 
 type ContentTypeServiceImpl struct {
@@ -42,4 +44,18 @@ func (ct ContentTypeServiceImpl) GetById(c context.Context, id int) (dto.Content
 	contentType.Name = result.Name
 
 	return contentType, nil
+}
+
+func (ct ContentTypeServiceImpl) Create(c context.Context, payload *dto.ContentTypePayload) error {
+	var content dto.ContentTypePayload
+
+	content.Name = payload.Name
+
+	err := ct.contentTypeRepository.Create(c, &content)
+
+	if err != nil {
+		return err
+	}
+
+	return nil
 }

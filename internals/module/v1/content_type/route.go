@@ -16,4 +16,5 @@ func ContentTypeRoutes(r fiber.Router, containerConf *container.Container) {
 
 	r.Get("/:id/types", middleware.JWTProtect(), controller.GetAll)
 	r.Get("/:id/types/:type_id", middleware.JWTProtect(), controller.GetById)
+	r.Post("/:id/types", middleware.JWTProtect(), controller.Create)
 }
