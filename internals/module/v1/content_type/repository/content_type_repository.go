@@ -3,6 +3,7 @@ package repository
 import (
 	"context"
 	"errors"
+	"time"
 
 	"github.com/tangguhriyadi/content-service/internals/entity"
 	"github.com/tangguhriyadi/content-service/internals/module/v1/content_type/dto"
@@ -12,7 +13,7 @@ import (
 type ContentTypeRepository interface {
 	GetAll(c context.Context, page int, limit int) (dto.ContentTypePaginate, error)
 	GetById(c context.Context, id int) (entity.ContentType, error)
-	Create(c context.Context, payload *dto.ContentTypePayload) error
+	Create(c context.Context, payload *dto.ContentTypePayload, user_id int32) error
 	Update(c context.Context, id int, payload *dto.ContentTypePayload) error
 }
 
@@ -77,7 +78,10 @@ func (ct ContentTypeRepositoryImpl) GetById(c context.Context, id int) (entity.C
 }
 
 func (ct ContentTypeRepositoryImpl) Update(c context.Context, id int, payload *dto.ContentTypePayload) error {
-	result := ct.db.WithContext(c).Where("id =?", id).Updates(payload)
+	var contentType entity.ContentType
+	contentType.Name = payload.Name
+	contentType.UpdatedAt = time.Now()
+	result := ct.db.WithContext(c).Where("id =?", id).Updates(&contentType)
 
 	if result.Error != nil {
 		return result.Error
@@ -86,9 +90,10 @@ func (ct ContentTypeRepositoryImpl) Update(c context.Context, id int, payload *d
 	return nil
 }
 
-func (ct ContentTypeRepositoryImpl) Create(c context.Context, payload *dto.ContentTypePayload) error {
+func (ct ContentTypeRepositoryImpl) Create(c context.Context, payload *dto.ContentTypePayload, user_id int32) error {
 	var content = entity.ContentType{
-		Name: payload.Name,
+		Name:      payload.Name,
+		CreatedBy: user_id,
 	}
 
 	result := ct.db.WithContext(c).Create(&content)

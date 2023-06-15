@@ -60,6 +60,13 @@ definitions:
       totalItems:
         type: integer
     type: object
+  dto.ContentTypePayload:
+    properties:
+      name:
+        type: string
+      updated_at:
+        type: string
+    type: object
   entity.Content:
     properties:
       comment_count:
@@ -227,6 +234,33 @@ paths:
       security:
       - Bearer: []
       summary: get content type list
+      tags:
+      - types
+    post:
+      consumes:
+      - application/json
+      description: create content type by id
+      parameters:
+      - description: id
+        in: path
+        name: id
+        type: string
+      - description: The input struct
+        in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/dto.ContentTypePayload'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.ContentTypePayload'
+      security:
+      - Bearer: []
+      summary: create content type by id
       tags:
       - types
   /contents/:id/types/:type_id:
