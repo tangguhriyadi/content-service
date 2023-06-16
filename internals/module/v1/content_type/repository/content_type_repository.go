@@ -15,6 +15,7 @@ type ContentTypeRepository interface {
 	GetById(c context.Context, id int) (entity.ContentType, error)
 	Create(c context.Context, payload *dto.ContentTypePayload, user_id int32) error
 	Update(c context.Context, id int, payload *dto.ContentTypePayload) error
+	Delete(c context.Context, payload *entity.ContentType, id int) error
 }
 
 type ContentTypeRepositoryImpl struct {
@@ -97,6 +98,17 @@ func (ct ContentTypeRepositoryImpl) Create(c context.Context, payload *dto.Conte
 	}
 
 	result := ct.db.WithContext(c).Create(&content)
+	if result.Error != nil {
+		return result.Error
+	}
+
+	return nil
+}
+
+func (ct ContentTypeRepositoryImpl) Delete(c context.Context, payload *entity.ContentType, id int) error {
+
+	result := ct.db.WithContext(c).Where("id =?", id).Updates(&payload)
+
 	if result.Error != nil {
 		return result.Error
 	}

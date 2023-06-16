@@ -3,6 +3,7 @@ package service
 import (
 	"context"
 	"errors"
+	"time"
 
 	"github.com/tangguhriyadi/content-service/internals/module/v1/content_type/dto"
 	"github.com/tangguhriyadi/content-service/internals/module/v1/content_type/repository"
@@ -13,6 +14,7 @@ type ContentTypeService interface {
 	GetById(c context.Context, id int) (dto.ContentType, error)
 	Update(c context.Context, id int, payload *dto.ContentTypePayload) error
 	Create(c context.Context, payload *dto.ContentTypePayload, user_id int32) error
+	Delete(c context.Context, id int, user_id int32) error
 }
 
 type ContentTypeServiceImpl struct {
@@ -76,4 +78,25 @@ func (ct ContentTypeServiceImpl) Update(c context.Context, id int, payload *dto.
 	}
 
 	return nil
+}
+
+func (ct ContentTypeServiceImpl) Delete(c context.Context, id int, user_id int32) error {
+
+	result, err := ct.contentTypeRepository.GetById(c, id)
+
+	if err != nil {
+		return errors.New("content type not found")
+	}
+
+	var now = time.Now()
+	result.Deleted = true
+	result.DeletedBy = user_id
+	result.DeletedAt = &now
+
+	if err := ct.contentTypeRepository.Delete(c, &result, id); err != nil {
+		return err
+	}
+
+	return nil
+
 }

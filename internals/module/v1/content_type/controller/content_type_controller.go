@@ -16,6 +16,7 @@ type ContentTypeController interface {
 	GetById(ctx *fiber.Ctx) error
 	Create(ctx *fiber.Ctx) error
 	Update(ctx *fiber.Ctx) error
+	Delete(ctx *fiber.Ctx) error
 }
 
 type ContentTypeControllerImpl struct {
@@ -170,4 +171,25 @@ func (ct ContentTypeControllerImpl) Update(ctx *fiber.Ctx) error {
 	}
 
 	return helper.ApiResponse(ctx, true, "Update Success", "", &payload, fiber.StatusCreated)
+}
+
+func (ct ContentTypeControllerImpl) Delete(ctx *fiber.Ctx) error {
+	var c = ctx.Context()
+	var id = ctx.Params("type_id")
+	typeId, err := strconv.Atoi(id)
+	if err != nil {
+		return helper.ApiResponse(ctx, false, "Bad Request", err.Error(), nil, fiber.StatusBadRequest)
+	}
+
+	//claim token
+	token, err := token.ExtractTokenMetada(ctx)
+	if err != nil {
+		return helper.ApiResponse(ctx, false, "Forbidden", err.Error(), nil, fiber.StatusForbidden)
+	}
+
+	if err := ct.contentTypeService.Delete(c, typeId, int32(token.UserId)); err != nil {
+		return helper.ApiResponse(ctx, true, "Bad Request", err.Error(), nil, fiber.StatusBadRequest)
+	}
+
+	return helper.ApiResponse(ctx, true, "Delete Success", "", "", fiber.StatusOK)
 }
