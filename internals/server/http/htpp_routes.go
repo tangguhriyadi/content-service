@@ -6,6 +6,7 @@ import (
 	"github.com/tangguhriyadi/content-service/internals/helper"
 	"github.com/tangguhriyadi/content-service/internals/infrastructure/container"
 	"github.com/tangguhriyadi/content-service/internals/module/v1/content"
+	contentLike "github.com/tangguhriyadi/content-service/internals/module/v1/content_like"
 	contentType "github.com/tangguhriyadi/content-service/internals/module/v1/content_type"
 )
 
@@ -18,10 +19,11 @@ func HttpRouteInit(r *fiber.App, containerConf *container.Container) {
 	contentApi := r.Group("/")
 	content.ContentRoutes(contentApi, containerConf)
 	contentType.ContentTypeRoutes(contentApi, containerConf)
+	contentLike.ContentLikeRoutes(contentApi, containerConf)
 
 	r.Get("/documentation/*", fiberSwagger.WrapHandler)
 	r.Use(func(ctx *fiber.Ctx) error {
-		return helper.ApiResponse(ctx, true, "NOT FOUND", "", nil, fiber.StatusOK)
+		return helper.ApiResponse(ctx, false, "NOT FOUND", "", nil, fiber.StatusOK)
 	})
 
 }
