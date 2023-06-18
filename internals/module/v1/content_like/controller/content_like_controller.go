@@ -55,6 +55,6 @@ func (cl ContentLikeControllerImpl) Like(ctx *fiber.Ctx) error {
 		return helper.ApiResponse(ctx, false, "Internal Server Error", err.Error(), nil, fiber.StatusInternalServerError)
 	}
 
-	return helper.ApiResponse(ctx, true, "Content Liked !", "", nil, fiber.StatusOK)
+	return helper.ApiResponse(ctx, true, "Content Status Updated !", "", nil, fiber.StatusOK)
 
 }
