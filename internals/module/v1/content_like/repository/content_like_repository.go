@@ -12,6 +12,7 @@ type ContentLikeRepo interface {
 	Like(c context.Context, payload *entity.ContentLikeHistory) error
 	GetLikeById(c context.Context, content_id int32, user_id int32) (entity.ContentLikeHistory, error)
 	Update(c context.Context, content_id int32, user_id int32, types string) error
+	Delete(c context.Context, content_id int32, user_id int32) error
 }
 
 type ContentLikeRepoImpl struct {
@@ -58,5 +59,13 @@ func (cl ContentLikeRepoImpl) Update(c context.Context, content_id int32, user_i
 		return errors.New("error when updating like status")
 	}
 
+	return nil
+}
+
+func (cl ContentLikeRepoImpl) Delete(c context.Context, content_id int32, user_id int32) error {
+	var contentLike entity.ContentLikeHistory
+	if err := cl.db.WithContext(c).Where("content_id =?", content_id).Where("user_id =?", user_id).Delete(&contentLike).Error; err != nil {
+		return err
+	}
 	return nil
 }

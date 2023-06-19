@@ -47,15 +47,25 @@ func (cl ContentLikeServiceImpl) Like(c context.Context, types string, content_i
 		return err
 	}
 
-	if find.Type == "like" {
-		if err := cl.contentLikeRepo.Update(c, content_id, user_id, "dislike"); err != nil {
+	if find.Type == types {
+		if err := cl.contentLikeRepo.Delete(c, content_id, user_id); err != nil {
 			return err
 		}
 	} else {
-		if err := cl.contentLikeRepo.Update(c, content_id, user_id, "like"); err != nil {
+		if err := cl.contentLikeRepo.Update(c, content_id, user_id, types); err != nil {
 			return err
 		}
 	}
+
+	// if find.Type == "like" {
+	// 	if err := cl.contentLikeRepo.Update(c, content_id, user_id, "dislike"); err != nil {
+	// 		return err
+	// 	}
+	// } else {
+	// 	if err := cl.contentLikeRepo.Update(c, content_id, user_id, "like"); err != nil {
+	// 		return err
+	// 	}
+	// }
 
 	return nil
 
