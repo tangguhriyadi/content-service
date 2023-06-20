@@ -5,6 +5,7 @@ import (
 	"errors"
 
 	"github.com/tangguhriyadi/content-service/internals/entity"
+	"github.com/tangguhriyadi/content-service/internals/module/v1/content/dto"
 	contentRepo "github.com/tangguhriyadi/content-service/internals/module/v1/content/repository"
 	"github.com/tangguhriyadi/content-service/internals/module/v1/content_like/repository"
 )
@@ -44,6 +45,10 @@ func (cl ContentLikeServiceImpl) Like(c context.Context, types string, content_i
 
 		err := cl.contentLikeRepo.Like(c, &contentLike)
 
+		if err := cl.count(c, content_id); err != nil {
+			return err
+		}
+
 		return err
 	}
 
@@ -57,16 +62,26 @@ func (cl ContentLikeServiceImpl) Like(c context.Context, types string, content_i
 		}
 	}
 
-	// if find.Type == "like" {
-	// 	if err := cl.contentLikeRepo.Update(c, content_id, user_id, "dislike"); err != nil {
-	// 		return err
-	// 	}
-	// } else {
-	// 	if err := cl.contentLikeRepo.Update(c, content_id, user_id, "like"); err != nil {
-	// 		return err
-	// 	}
-	// }
+	if err := cl.count(c, content_id); err != nil {
+		return err
+	}
 
 	return nil
 
+}
+
+func (cl ContentLikeServiceImpl) count(c context.Context, content_id int32) error {
+	count, err := cl.contentLikeRepo.Count(c, content_id)
+	if err != nil {
+		return err
+	}
+
+	var content dto.Content
+	content.LikeCount = int32(count)
+
+	if err := cl.contentRepo.Update(c, int(content_id), &content); err != nil {
+		return err
+	}
+
+	return nil
 }

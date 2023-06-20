@@ -13,6 +13,7 @@ type ContentLikeRepo interface {
 	GetLikeById(c context.Context, content_id int32, user_id int32) (entity.ContentLikeHistory, error)
 	Update(c context.Context, content_id int32, user_id int32, types string) error
 	Delete(c context.Context, content_id int32, user_id int32) error
+	Count(c context.Context, content_id int32) (int64, error)
 }
 
 type ContentLikeRepoImpl struct {
@@ -68,4 +69,17 @@ func (cl ContentLikeRepoImpl) Delete(c context.Context, content_id int32, user_i
 		return err
 	}
 	return nil
+}
+
+func (cl ContentLikeRepoImpl) Count(c context.Context, content_id int32) (int64, error) {
+	var contentLike []entity.ContentLikeHistory
+	var count int64
+
+	countResult := cl.db.WithContext(c).Model(&contentLike).Where("content_id =?", content_id).Where("type =?", "like").Count(&count)
+	if countResult.Error != nil {
+		return 0, countResult.Error
+	}
+
+	return count, nil
+
 }
