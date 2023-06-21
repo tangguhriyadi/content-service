@@ -6,6 +6,7 @@ import (
 	"github.com/tangguhriyadi/content-service/internals/helper"
 	"github.com/tangguhriyadi/content-service/internals/infrastructure/container"
 	"github.com/tangguhriyadi/content-service/internals/module/v1/content"
+	contentComment "github.com/tangguhriyadi/content-service/internals/module/v1/content_comment"
 	contentLike "github.com/tangguhriyadi/content-service/internals/module/v1/content_like"
 	contentType "github.com/tangguhriyadi/content-service/internals/module/v1/content_type"
 )
@@ -20,6 +21,7 @@ func HttpRouteInit(r *fiber.App, containerConf *container.Container) {
 	content.ContentRoutes(contentApi, containerConf)
 	contentType.ContentTypeRoutes(contentApi, containerConf)
 	contentLike.ContentLikeRoutes(contentApi, containerConf)
+	contentComment.ContentCommentRoutes(contentApi, containerConf)
 
 	r.Get("/documentation/*", fiberSwagger.WrapHandler)
 	r.Use(func(ctx *fiber.Ctx) error {
