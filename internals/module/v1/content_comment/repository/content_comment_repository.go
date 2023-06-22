@@ -11,6 +11,7 @@ import (
 type ContentCommentRepo interface {
 	GetByContentId(c context.Context, content_id int32) (*[]entity.ContentComment, error)
 	GetReplies(c context.Context, content_id int32) (*[]dto.ContentCommentReply, error)
+	PostComment(c context.Context, payload *entity.ContentComment) error
 }
 
 type ContentCommentImpl struct {
@@ -56,4 +57,12 @@ func (cm ContentCommentImpl) GetReplies(c context.Context, comment_id int32) (*[
 	}
 
 	return &replies, nil
+}
+
+func (cm ContentCommentImpl) PostComment(c context.Context, payload *entity.ContentComment) error {
+	if err := cm.db.WithContext(c).Create(&payload).Error; err != nil {
+		return err
+	}
+
+	return nil
 }

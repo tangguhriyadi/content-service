@@ -3,12 +3,14 @@ package service
 import (
 	"context"
 
+	"github.com/tangguhriyadi/content-service/internals/entity"
 	"github.com/tangguhriyadi/content-service/internals/module/v1/content_comment/dto"
 	"github.com/tangguhriyadi/content-service/internals/module/v1/content_comment/repository"
 )
 
 type ContentCommentService interface {
 	GetByContentId(c context.Context, content_id int32) (*[]dto.ContentComment, error)
+	PostComment(c context.Context, content_id int32, payload *dto.ContentPayload, user_id int32) error
 }
 
 type ContentCommentServiceImpl struct {
@@ -45,4 +47,18 @@ func (cc ContentCommentServiceImpl) GetByContentId(c context.Context, content_id
 	}
 
 	return &contentComment, nil
+}
+
+func (cc ContentCommentServiceImpl) PostComment(c context.Context, content_id int32, payload *dto.ContentPayload, user_id int32) error {
+	var content entity.ContentComment
+
+	content.Comment = payload.Comment
+	content.ContentId = content_id
+	content.UserId = user_id
+
+	if err := cc.contentCommentRepo.PostComment(c, &content); err != nil {
+		return err
+	}
+
+	return nil
 }
