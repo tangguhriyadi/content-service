@@ -12,7 +12,8 @@ import (
 func ContentCommentRoutes(r fiber.Router, containerConf *container.Container) {
 	repository := repository.NewContentCommentRepo(containerConf.Postgre)
 	service := service.NewContentCommentService(repository)
-	controller := controller.NewContentCommentController(service)
+	controller := controller.NewContentCommentController(service, containerConf.Validator)
 
-	r.Get("/:id", middleware.JWTProtect(), controller.GetByContentId)
+	r.Get("/:id/comment", middleware.JWTProtect(), controller.GetByContentId)
+	r.Post("/:id/comment", middleware.JWTProtect(), controller.PostComment)
 }
