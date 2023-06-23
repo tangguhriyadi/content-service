@@ -92,7 +92,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/dto.ContentPayload"
+                            "$ref": "#/definitions/github_com_tangguhriyadi_content-service_internals_module_v1_content_dto.ContentPayload"
                         }
                     }
                 ],
@@ -171,7 +171,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/dto.ContentPayload"
+                            "$ref": "#/definitions/github_com_tangguhriyadi_content-service_internals_module_v1_content_dto.ContentPayload"
                         }
                     }
                 ],
@@ -179,7 +179,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/dto.ContentPayload"
+                            "$ref": "#/definitions/github_com_tangguhriyadi_content-service_internals_module_v1_content_dto.ContentPayload"
                         }
                     }
                 }
@@ -363,20 +363,6 @@
                 }
             }
         },
-        "dto.ContentPayload": {
-            "type": "object",
-            "required": [
-                "name"
-            ],
-            "properties": {
-                "is_premium": {
-                    "type": "boolean"
-                },
-                "name": {
-                    "type": "string"
-                }
-            }
-        },
         "dto.ContentType": {
             "type": "object",
             "properties": {
@@ -456,6 +442,20 @@
                     "type": "integer"
                 },
                 "updated_at": {
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_tangguhriyadi_content-service_internals_module_v1_content_dto.ContentPayload": {
+            "type": "object",
+            "required": [
+                "name"
+            ],
+            "properties": {
+                "is_premium": {
+                    "type": "boolean"
+                },
+                "name": {
                     "type": "string"
                 }
             }

@@ -31,15 +31,6 @@ definitions:
       totalItems:
         type: integer
     type: object
-  dto.ContentPayload:
-    properties:
-      is_premium:
-        type: boolean
-      name:
-        type: string
-    required:
-    - name
-    type: object
   dto.ContentType:
     properties:
       id:
@@ -93,6 +84,15 @@ definitions:
         type: integer
       updated_at:
         type: string
+    type: object
+  github_com_tangguhriyadi_content-service_internals_module_v1_content_dto.ContentPayload:
+    properties:
+      is_premium:
+        type: boolean
+      name:
+        type: string
+    required:
+    - name
     type: object
 info:
   contact: {}
@@ -174,14 +174,14 @@ paths:
         name: payload
         required: true
         schema:
-          $ref: '#/definitions/dto.ContentPayload'
+          $ref: '#/definitions/github_com_tangguhriyadi_content-service_internals_module_v1_content_dto.ContentPayload'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/dto.ContentPayload'
+            $ref: '#/definitions/github_com_tangguhriyadi_content-service_internals_module_v1_content_dto.ContentPayload'
       security:
       - Bearer: []
       summary: update content
@@ -197,7 +197,7 @@ paths:
         name: payload
         required: true
         schema:
-          $ref: '#/definitions/dto.ContentPayload'
+          $ref: '#/definitions/github_com_tangguhriyadi_content-service_internals_module_v1_content_dto.ContentPayload'
       produces:
       - application/json
       responses:

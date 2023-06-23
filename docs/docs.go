@@ -104,7 +104,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/dto.ContentPayload"
+                            "$ref": "#/definitions/github_com_tangguhriyadi_content-service_internals_module_v1_content_dto.ContentPayload"
                         }
                     }
                 ],
@@ -183,7 +183,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/dto.ContentPayload"
+                            "$ref": "#/definitions/github_com_tangguhriyadi_content-service_internals_module_v1_content_dto.ContentPayload"
                         }
                     }
                 ],
@@ -191,7 +191,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/dto.ContentPayload"
+                            "$ref": "#/definitions/github_com_tangguhriyadi_content-service_internals_module_v1_content_dto.ContentPayload"
                         }
                     }
                 }
@@ -375,20 +375,6 @@ const docTemplate = `{
                 }
             }
         },
-        "dto.ContentPayload": {
-            "type": "object",
-            "required": [
-                "name"
-            ],
-            "properties": {
-                "is_premium": {
-                    "type": "boolean"
-                },
-                "name": {
-                    "type": "string"
-                }
-            }
-        },
         "dto.ContentType": {
             "type": "object",
             "properties": {
@@ -468,6 +454,20 @@ const docTemplate = `{
                     "type": "integer"
                 },
                 "updated_at": {
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_tangguhriyadi_content-service_internals_module_v1_content_dto.ContentPayload": {
+            "type": "object",
+            "required": [
+                "name"
+            ],
+            "properties": {
+                "is_premium": {
+                    "type": "boolean"
+                },
+                "name": {
                     "type": "string"
                 }
             }
