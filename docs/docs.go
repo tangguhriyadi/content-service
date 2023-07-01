@@ -197,6 +197,52 @@ const docTemplate = `{
                 }
             }
         },
+        "/contents/:id/like": {
+            "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "post content like",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "contents"
+                ],
+                "summary": "post content like",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "content id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "type",
+                        "name": "payload",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.ContentLikePayload"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dto.ContentLikePayload"
+                        }
+                    }
+                }
+            }
+        },
         "/contents/:id/types": {
             "get": {
                 "security": [
@@ -352,6 +398,14 @@ const docTemplate = `{
                 },
                 "type_id": {
                     "type": "integer"
+                }
+            }
+        },
+        "dto.ContentLikePayload": {
+            "type": "object",
+            "properties": {
+                "type": {
+                    "type": "string"
                 }
             }
         },
