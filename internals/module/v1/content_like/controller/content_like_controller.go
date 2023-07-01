@@ -28,6 +28,17 @@ func NewContentLikeController(validate *validator.Validate,
 	}
 }
 
+// ShowAccount godoc
+// @Summary      post content like
+// @Description  post content like
+// @Tags         contents
+// @Accept       json
+// @Produce      json
+// @Param	id path	string	true	"content id"
+// @Param	payload body dto.ContentLikePayload	true "type"
+// @Success      200  {object}  dto.ContentLikePayload
+// @Router       /contents/:id/like [post]
+// @Security 	 Bearer
 func (cl ContentLikeControllerImpl) Like(ctx *fiber.Ctx) error {
 	c := ctx.Context()
 	var payload dto.ContentLikePayload
