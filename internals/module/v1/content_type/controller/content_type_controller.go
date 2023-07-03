@@ -185,6 +185,17 @@ func (ct ContentTypeControllerImpl) Update(ctx *fiber.Ctx) error {
 	return helper.ApiResponse(ctx, true, "Update Success", "", &payload, fiber.StatusCreated)
 }
 
+// ShowAccount godoc
+// @Summary      delete content type by id
+// @Description  delete content type by id
+// @Tags         types
+// @Accept       json
+// @Produce      json
+// @Param	id path	string	false	"id"
+// @param type_id path string false "type_id"
+// @Success      200  {object}  dto.ContentTypePayload
+// @Router       /contents/:id/types [delete]
+// @Security 	 Bearer
 func (ct ContentTypeControllerImpl) Delete(ctx *fiber.Ctx) error {
 	var c = ctx.Context()
 	var id = ctx.Params("type_id")
