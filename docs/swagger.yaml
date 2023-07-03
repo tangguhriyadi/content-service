@@ -245,6 +245,31 @@ paths:
       tags:
       - contents
   /contents/:id/types:
+    delete:
+      consumes:
+      - application/json
+      description: delete content type by id
+      parameters:
+      - description: id
+        in: path
+        name: id
+        type: string
+      - description: type_id
+        in: path
+        name: type_id
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.ContentTypePayload'
+      security:
+      - Bearer: []
+      summary: delete content type by id
+      tags:
+      - types
     get:
       consumes:
       - application/json
@@ -268,6 +293,37 @@ paths:
       security:
       - Bearer: []
       summary: get content type list
+      tags:
+      - types
+    patch:
+      consumes:
+      - application/json
+      description: update content type by id
+      parameters:
+      - description: id
+        in: path
+        name: id
+        type: string
+      - description: type_id
+        in: path
+        name: type_id
+        type: string
+      - description: The input struct
+        in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/dto.ContentTypePayload'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.ContentTypePayload'
+      security:
+      - Bearer: []
+      summary: update content type by id
       tags:
       - types
     post:
