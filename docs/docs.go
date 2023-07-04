@@ -197,6 +197,45 @@ const docTemplate = `{
                 }
             }
         },
+        "/contents/:id/comment/": {
+            "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "get content comment by id",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "comments"
+                ],
+                "summary": "get content comment by id",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "id",
+                        "name": "id",
+                        "in": "path"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/dto.ContentComment"
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/contents/:id/like": {
             "post": {
                 "security": [
@@ -486,6 +525,55 @@ const docTemplate = `{
                     "type": "integer"
                 },
                 "type_id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "dto.ContentComment": {
+            "type": "object",
+            "properties": {
+                "comment": {
+                    "type": "string"
+                },
+                "content_id": {
+                    "type": "integer"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "like_count": {
+                    "type": "integer"
+                },
+                "replies": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/dto.ContentCommentReply"
+                    }
+                },
+                "user_id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "dto.ContentCommentReply": {
+            "type": "object",
+            "properties": {
+                "comment": {
+                    "type": "string"
+                },
+                "content_id": {
+                    "type": "integer"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "like_count": {
+                    "type": "integer"
+                },
+                "reply_to": {
+                    "type": "integer"
+                },
+                "user_id": {
                     "type": "integer"
                 }
             }
