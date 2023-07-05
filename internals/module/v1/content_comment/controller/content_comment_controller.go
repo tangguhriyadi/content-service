@@ -57,6 +57,16 @@ func (cc ContentCommentControllerImpl) GetByContentId(ctx *fiber.Ctx) error {
 	return helper.ApiResponse(ctx, true, "Success Get", "", result, fiber.StatusOK)
 }
 
+// ShowAccount godoc
+// @Summary      create comment
+// @Description  create comment
+// @Tags         contents
+// @Accept       json
+// @Produce      json
+// @Param payload body dto.ContentPayload true "The input struct"
+// @Success      200  {object}  dto.Content
+// @Router       /contents/:id/comment [post]
+// @Security 	 Bearer
 func (cc ContentCommentControllerImpl) PostComment(ctx *fiber.Ctx) error {
 	var c = ctx.Context()
 	var contentId = ctx.Params("id")
