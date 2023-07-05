@@ -185,6 +185,45 @@
                 }
             }
         },
+        "/contents/:id/comment": {
+            "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "create comment",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "contents"
+                ],
+                "summary": "create comment",
+                "parameters": [
+                    {
+                        "description": "The input struct",
+                        "name": "payload",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/github_com_tangguhriyadi_content-service_internals_module_v1_content_comment_dto.ContentPayload"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dto.Content"
+                        }
+                    }
+                }
+            }
+        },
         "/contents/:id/comment/": {
             "get": {
                 "security": [
@@ -673,6 +712,15 @@
                     "type": "integer"
                 },
                 "updated_at": {
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_tangguhriyadi_content-service_internals_module_v1_content_comment_dto.ContentPayload": {
+            "type": "object",
+            "properties": {
+                "comment": {
+                    "description": "ID        int32  `gorm:\"primaryKey\" json:\"id\"`\nContentId int32  `gorm:\"type:int\" json:\"content_id\"`\nUserId    int32  `gorm:\"type:int\" json:\"user_id\"`\nLikeCount int32  `gorm:\"type:int\" json:\"like_count\"`",
                     "type": "string"
                 }
             }
