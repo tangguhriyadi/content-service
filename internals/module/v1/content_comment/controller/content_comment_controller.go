@@ -35,7 +35,7 @@ func NewContentCommentController(contentCommentService service.ContentCommentSer
 // @Accept       json
 // @Produce      json
 // @Param	id path	string	false	"id"
-// @Success      200  {object}  []dto.ContentComment
+// @Success      200  {object}  []dto.CommentPayload
 // @Router       /contents/:id/comment/ [get]
 // @Security 	 Bearer
 func (cc ContentCommentControllerImpl) GetByContentId(ctx *fiber.Ctx) error {
@@ -58,19 +58,19 @@ func (cc ContentCommentControllerImpl) GetByContentId(ctx *fiber.Ctx) error {
 }
 
 // ShowAccount godoc
-// @Summary      create comment
-// @Description  create comment
+// @Summary      post comment
+// @Description  post comment
 // @Tags         contents
 // @Accept       json
 // @Produce      json
-// @Param payload body dto.ContentPayload true "The input struct"
+// @Param payload body dto.CommentPayload true "The input struct"
 // @Success      200  {object}  dto.Content
 // @Router       /contents/:id/comment [post]
 // @Security 	 Bearer
 func (cc ContentCommentControllerImpl) PostComment(ctx *fiber.Ctx) error {
 	var c = ctx.Context()
 	var contentId = ctx.Params("id")
-	var payload dto.ContentPayload
+	var payload dto.CommentPayload
 
 	// param validator
 	content_id, err := strconv.Atoi(contentId)

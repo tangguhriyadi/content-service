@@ -1,4 +1,9 @@
 definitions:
+  dto.CommentPayload:
+    properties:
+      comment:
+        type: string
+    type: object
   dto.Content:
     properties:
       comment_count:
@@ -18,38 +23,6 @@ definitions:
     required:
     - name
     type: object
-  dto.ContentComment:
-    properties:
-      comment:
-        type: string
-      content_id:
-        type: integer
-      id:
-        type: integer
-      like_count:
-        type: integer
-      replies:
-        items:
-          $ref: '#/definitions/dto.ContentCommentReply'
-        type: array
-      user_id:
-        type: integer
-    type: object
-  dto.ContentCommentReply:
-    properties:
-      comment:
-        type: string
-      content_id:
-        type: integer
-      id:
-        type: integer
-      like_count:
-        type: integer
-      reply_to:
-        type: integer
-      user_id:
-        type: integer
-    type: object
   dto.ContentLikePayload:
     properties:
       type:
@@ -67,6 +40,15 @@ definitions:
         type: integer
       totalItems:
         type: integer
+    type: object
+  dto.ContentPayload:
+    properties:
+      is_premium:
+        type: boolean
+      name:
+        type: string
+    required:
+    - name
     type: object
   dto.ContentType:
     properties:
@@ -121,25 +103,6 @@ definitions:
         type: integer
       updated_at:
         type: string
-    type: object
-  github_com_tangguhriyadi_content-service_internals_module_v1_content_comment_dto.ContentPayload:
-    properties:
-      comment:
-        description: |-
-          ID        int32  `gorm:"primaryKey" json:"id"`
-          ContentId int32  `gorm:"type:int" json:"content_id"`
-          UserId    int32  `gorm:"type:int" json:"user_id"`
-          LikeCount int32  `gorm:"type:int" json:"like_count"`
-        type: string
-    type: object
-  github_com_tangguhriyadi_content-service_internals_module_v1_content_dto.ContentPayload:
-    properties:
-      is_premium:
-        type: boolean
-      name:
-        type: string
-    required:
-    - name
     type: object
 info:
   contact: {}
@@ -221,14 +184,14 @@ paths:
         name: payload
         required: true
         schema:
-          $ref: '#/definitions/github_com_tangguhriyadi_content-service_internals_module_v1_content_dto.ContentPayload'
+          $ref: '#/definitions/dto.ContentPayload'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/github_com_tangguhriyadi_content-service_internals_module_v1_content_dto.ContentPayload'
+            $ref: '#/definitions/dto.ContentPayload'
       security:
       - Bearer: []
       summary: update content
@@ -244,7 +207,7 @@ paths:
         name: payload
         required: true
         schema:
-          $ref: '#/definitions/github_com_tangguhriyadi_content-service_internals_module_v1_content_dto.ContentPayload'
+          $ref: '#/definitions/dto.ContentPayload'
       produces:
       - application/json
       responses:
@@ -261,14 +224,14 @@ paths:
     post:
       consumes:
       - application/json
-      description: create comment
+      description: post comment
       parameters:
       - description: The input struct
         in: body
         name: payload
         required: true
         schema:
-          $ref: '#/definitions/github_com_tangguhriyadi_content-service_internals_module_v1_content_comment_dto.ContentPayload'
+          $ref: '#/definitions/dto.CommentPayload'
       produces:
       - application/json
       responses:
@@ -278,7 +241,7 @@ paths:
             $ref: '#/definitions/dto.Content'
       security:
       - Bearer: []
-      summary: create comment
+      summary: post comment
       tags:
       - contents
   /contents/:id/comment/:
@@ -298,7 +261,7 @@ paths:
           description: OK
           schema:
             items:
-              $ref: '#/definitions/dto.ContentComment'
+              $ref: '#/definitions/dto.CommentPayload'
             type: array
       security:
       - Bearer: []
