@@ -104,7 +104,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_tangguhriyadi_content-service_internals_module_v1_content_dto.ContentPayload"
+                            "$ref": "#/definitions/dto.ContentPayload"
                         }
                     }
                 ],
@@ -183,7 +183,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_tangguhriyadi_content-service_internals_module_v1_content_dto.ContentPayload"
+                            "$ref": "#/definitions/dto.ContentPayload"
                         }
                     }
                 ],
@@ -191,7 +191,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/github_com_tangguhriyadi_content-service_internals_module_v1_content_dto.ContentPayload"
+                            "$ref": "#/definitions/dto.ContentPayload"
                         }
                     }
                 }
@@ -204,7 +204,7 @@ const docTemplate = `{
                         "Bearer": []
                     }
                 ],
-                "description": "create comment",
+                "description": "post comment",
                 "consumes": [
                     "application/json"
                 ],
@@ -214,7 +214,7 @@ const docTemplate = `{
                 "tags": [
                     "contents"
                 ],
-                "summary": "create comment",
+                "summary": "post comment",
                 "parameters": [
                     {
                         "description": "The input struct",
@@ -222,7 +222,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_tangguhriyadi_content-service_internals_module_v1_content_comment_dto.ContentPayload"
+                            "$ref": "#/definitions/dto.CommentPayload"
                         }
                     }
                 ],
@@ -268,7 +268,7 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/dto.ContentComment"
+                                "$ref": "#/definitions/dto.CommentPayload"
                             }
                         }
                     }
@@ -539,6 +539,14 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "dto.CommentPayload": {
+            "type": "object",
+            "properties": {
+                "comment": {
+                    "type": "string"
+                }
+            }
+        },
         "dto.Content": {
             "type": "object",
             "required": [
@@ -568,55 +576,6 @@ const docTemplate = `{
                 }
             }
         },
-        "dto.ContentComment": {
-            "type": "object",
-            "properties": {
-                "comment": {
-                    "type": "string"
-                },
-                "content_id": {
-                    "type": "integer"
-                },
-                "id": {
-                    "type": "integer"
-                },
-                "like_count": {
-                    "type": "integer"
-                },
-                "replies": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/dto.ContentCommentReply"
-                    }
-                },
-                "user_id": {
-                    "type": "integer"
-                }
-            }
-        },
-        "dto.ContentCommentReply": {
-            "type": "object",
-            "properties": {
-                "comment": {
-                    "type": "string"
-                },
-                "content_id": {
-                    "type": "integer"
-                },
-                "id": {
-                    "type": "integer"
-                },
-                "like_count": {
-                    "type": "integer"
-                },
-                "reply_to": {
-                    "type": "integer"
-                },
-                "user_id": {
-                    "type": "integer"
-                }
-            }
-        },
         "dto.ContentLikePayload": {
             "type": "object",
             "properties": {
@@ -642,6 +601,20 @@ const docTemplate = `{
                 },
                 "totalItems": {
                     "type": "integer"
+                }
+            }
+        },
+        "dto.ContentPayload": {
+            "type": "object",
+            "required": [
+                "name"
+            ],
+            "properties": {
+                "is_premium": {
+                    "type": "boolean"
+                },
+                "name": {
+                    "type": "string"
                 }
             }
         },
@@ -724,29 +697,6 @@ const docTemplate = `{
                     "type": "integer"
                 },
                 "updated_at": {
-                    "type": "string"
-                }
-            }
-        },
-        "github_com_tangguhriyadi_content-service_internals_module_v1_content_comment_dto.ContentPayload": {
-            "type": "object",
-            "properties": {
-                "comment": {
-                    "description": "ID        int32  ` + "`" + `gorm:\"primaryKey\" json:\"id\"` + "`" + `\nContentId int32  ` + "`" + `gorm:\"type:int\" json:\"content_id\"` + "`" + `\nUserId    int32  ` + "`" + `gorm:\"type:int\" json:\"user_id\"` + "`" + `\nLikeCount int32  ` + "`" + `gorm:\"type:int\" json:\"like_count\"` + "`" + `",
-                    "type": "string"
-                }
-            }
-        },
-        "github_com_tangguhriyadi_content-service_internals_module_v1_content_dto.ContentPayload": {
-            "type": "object",
-            "required": [
-                "name"
-            ],
-            "properties": {
-                "is_premium": {
-                    "type": "boolean"
-                },
-                "name": {
                     "type": "string"
                 }
             }

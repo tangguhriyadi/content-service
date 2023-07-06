@@ -10,7 +10,7 @@ import (
 
 type ContentCommentService interface {
 	GetByContentId(c context.Context, content_id int32) (*[]dto.ContentComment, error)
-	PostComment(c context.Context, content_id int32, payload *dto.ContentPayload, user_id int32) error
+	PostComment(c context.Context, content_id int32, payload *dto.CommentPayload, user_id int32) error
 }
 
 type ContentCommentServiceImpl struct {
@@ -49,7 +49,7 @@ func (cc ContentCommentServiceImpl) GetByContentId(c context.Context, content_id
 	return &contentComment, nil
 }
 
-func (cc ContentCommentServiceImpl) PostComment(c context.Context, content_id int32, payload *dto.ContentPayload, user_id int32) error {
+func (cc ContentCommentServiceImpl) PostComment(c context.Context, content_id int32, payload *dto.CommentPayload, user_id int32) error {
 	var content entity.ContentComment
 
 	content.Comment = payload.Comment
