@@ -28,16 +28,6 @@ func NewContentCommentController(contentCommentService service.ContentCommentSer
 	}
 }
 
-// ShowAccount godoc
-// @Summary      get content comment by id
-// @Description  get content comment by id
-// @Tags         comments
-// @Accept       json
-// @Produce      json
-// @Param	id path	string	false	"id"
-// @Success      200  {object}  []dto.CommentPayload
-// @Router       /contents/:id/comment/ [get]
-// @Security 	 Bearer
 func (cc ContentCommentControllerImpl) GetByContentId(ctx *fiber.Ctx) error {
 	var c = ctx.Context()
 	var contentId = ctx.Params("id")
