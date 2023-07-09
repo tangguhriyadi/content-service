@@ -23,6 +23,38 @@ definitions:
     required:
     - name
     type: object
+  dto.ContentComment:
+    properties:
+      comment:
+        type: string
+      content_id:
+        type: integer
+      id:
+        type: integer
+      like_count:
+        type: integer
+      replies:
+        items:
+          $ref: '#/definitions/dto.ContentCommentReply'
+        type: array
+      user_id:
+        type: integer
+    type: object
+  dto.ContentCommentReply:
+    properties:
+      comment:
+        type: string
+      content_id:
+        type: integer
+      id:
+        type: integer
+      like_count:
+        type: integer
+      reply_to:
+        type: integer
+      user_id:
+        type: integer
+    type: object
   dto.ContentLikePayload:
     properties:
       type:
@@ -150,7 +182,7 @@ paths:
     get:
       consumes:
       - application/json
-      description: get content by ID
+      description: get content_comment by ID
       parameters:
       - description: Content ID
         in: path
@@ -163,12 +195,12 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/dto.Content'
+            $ref: '#/definitions/dto.ContentComment'
       security:
       - Bearer: []
-      summary: get content by ID
+      summary: get content_comment by ID
       tags:
-      - contents
+      - comments
     patch:
       consumes:
       - application/json
@@ -244,30 +276,6 @@ paths:
       summary: post comment
       tags:
       - contents
-  /contents/:id/comment/:
-    get:
-      consumes:
-      - application/json
-      description: get content comment by id
-      parameters:
-      - description: id
-        in: path
-        name: id
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            items:
-              $ref: '#/definitions/dto.CommentPayload'
-            type: array
-      security:
-      - Bearer: []
-      summary: get content comment by id
-      tags:
-      - comments
   /contents/:id/like:
     post:
       consumes:
